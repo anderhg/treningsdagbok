@@ -4,7 +4,7 @@ public class Hovedprogram {
 
 	public static void main(String[] args) {
 		DatabaseConnection dbconn = new DatabaseConnection();
-		dbconn.insertExercise("Markløft", "Baseøvelse for rygg/ben");
+		dbconn.insertExercise("Marklï¿½ft", "Baseï¿½velse for rygg/ben");
 		
 	}
 }

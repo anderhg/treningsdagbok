@@ -1,5 +1,6 @@
 package Prosjekt;
 
+
 import java.sql.*;
 
 
@@ -19,6 +20,10 @@ public class DatabaseConnection {
 			e.printStackTrace();
 		}
 	}
+	
+	public void tull(){
+		System.out.println("dette er en teste!");
+	}
 	public DatabaseConnection(String url, String username, String password){
 		try{
 			myConn = DriverManager.getConnection(url, username, password);
@@ -31,7 +36,7 @@ public class DatabaseConnection {
 	public void insertExercise(String name, String descr){
 		try {
 		myStmt = myConn.createStatement();
-		String sql = "insert into øvelser" + "(Navn, Beskrivelse)" 
+		String sql = "insert into ï¿½velser" + "(Navn, Beskrivelse)" 
 				+ "values ( '" + name+"', '" +descr +"')";
 		
 			myStmt.executeUpdate(sql);
