@@ -2,66 +2,29 @@ package Prosjekt;
 
 
 import java.sql.*;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 
 public class DatabaseConnection {
-	private String url = "jdbc:mysql://localhost:3306/databaseprosjekt?autoReconnect=true&useSSL=false";
-	private String username = "root";
-	private String password = "donald60";
-	private Connection myConn;
-	private Statement myStmt;
+	private MysqlDataSource dataSource;
+	private Connection connection;
 	
 	public DatabaseConnection(){
-		try{
-		myConn = DriverManager.getConnection(this.url, this.username, this.password);
+		dataSource = new MysqlDataSource();
+		dataSource.setUser("babf3142724ee9");
+		dataSource.setPassword("1935c4f2");
+		dataSource.setServerName("eu-cdbr-azure-north-d.cloudapp.net");
+		dataSource.setDatabaseName("feelmybicep");
 		
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	public DatabaseConnection(String url, String username, String password){
-		try{
-			myConn = DriverManager.getConnection(url, username, password);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	public void insertExercise(String name, String descr){
 		try {
-		myStmt = myConn.createStatement();
-		String sql = "insert into �velser" + "(Navn, Beskrivelse)" 
-				+ "values ( '" + name+"', '" +descr +"')";
-		
-			myStmt.executeUpdate(sql);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			connection = dataSource.getConnection();
 		}
-		
-		
-		
+		catch(Exception e) {
+			System.out.println("Connection error");
+		}
 	}
 	
-	public String showAll(){
-		String ret = "";
-		try {
-			myStmt = myConn.createStatement();
-			ResultSet myRs = myStmt.executeQuery("Select * from category");
-			while (myRs.next()){
-			ret += "" + myRs.getString("category_id") + ", " + myRs.getString("name") + "\n";
-			}
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-		return ret; 
-			
+	public Connection getConnection() {
+		return connection;
 	}
-	
-	
-	
-	
 }

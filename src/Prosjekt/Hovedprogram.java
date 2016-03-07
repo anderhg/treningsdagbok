@@ -4,7 +4,8 @@ public class Hovedprogram {
 
 	public static void main(String[] args) {
 		DatabaseConnection dbconn = new DatabaseConnection();
-		dbconn.insertExercise("Markl�ft", "Base�velse for rygg/ben");
-		
+		DBOperations operations = new DBOperations(dbconn.getConnection());
+		operations.insertExercise("Markløft", "Baseøvelse for rygg/ben");
+		System.out.println(operations.showAll());
 	}
 }
