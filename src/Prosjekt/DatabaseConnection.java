@@ -21,9 +21,6 @@ public class DatabaseConnection {
 		}
 	}
 	
-	public void tull(){
-		System.out.println("dette er en teste!");
-	}
 	public DatabaseConnection(String url, String username, String password){
 		try{
 			myConn = DriverManager.getConnection(url, username, password);
