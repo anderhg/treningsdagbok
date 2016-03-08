@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 
 public class DBOperations {
-	
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private Statement myStmt;
 	private Connection myConn;
 	
