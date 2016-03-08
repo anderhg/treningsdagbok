@@ -27,5 +27,14 @@ public class DatabaseConnection {
 	public Connection getConnection() {
 		return connection;
 	}
+	
+	public void closeConnection() {
+		try {
+			connection.close();
+		}
+		catch(Exception e) {
+			System.out.println("Can't close connection");
+		}
+	}
 
 }

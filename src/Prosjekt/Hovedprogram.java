@@ -12,5 +12,6 @@ public class Hovedprogram {
 		operations.insertExercise("Markløft", "Baseøvelse for rygg/ben");
 		operations.insertExercise("Markløft", "Baseøvelse for rygg/ben");
 		System.out.println(operations.showAll());
+		dbconn.closeConnection();
 	}
 }
