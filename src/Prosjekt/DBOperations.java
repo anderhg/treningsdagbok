@@ -27,6 +27,22 @@ public class DBOperations {
 		
 	}
 	
+	public void insertWorkout(int duration, int shape, int performance, String note, int diaryID ){
+		Date date = new Date();
+		String timeStamp = sdf.format(date);
+		try {
+			myStmt = myConn.createStatement();
+			String sql = "insert into treningsøkt" + 
+			"(Dato, Varighet, PersonligForm, PersonligPrestasjon, Notat, Treningsdagbok)" 
+					+ "values (" +timeStamp+ "," +duration +"," + shape+ "," + performance +
+					", '" +note + "'," + diaryID + " )";
+			
+				myStmt.executeUpdate(sql);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}
+	
 	public String showAll(){
 		String ret = "";
 		try {
