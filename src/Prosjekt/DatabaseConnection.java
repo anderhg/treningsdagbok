@@ -33,7 +33,7 @@ public class DatabaseConnection {
 	public void insertExercise(String name, String descr){
 		try {
 		myStmt = myConn.createStatement();
-		String sql = "insert into �velser" + "(Navn, Beskrivelse)" 
+		String sql = "insert into øvelser" + "(Navn, Beskrivelse)" 
 				+ "values ( '" + name+"', '" +descr +"')";
 		
 			myStmt.executeUpdate(sql);
