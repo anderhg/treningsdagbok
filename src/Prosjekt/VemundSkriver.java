@@ -25,6 +25,8 @@ public class VemundSkriver {
 		}
 	}
 	
+	
+	
 	public void makeDiary(){
 		try {
 		myStmt = myConn.createStatement();
