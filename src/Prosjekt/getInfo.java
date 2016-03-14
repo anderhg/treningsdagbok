@@ -21,9 +21,9 @@ public class getInfo {
 		String ret = "";
 		try {
 			myStmt = myConn.createStatement();
-			ResultSet myRs = myStmt.executeQuery("Select * from treningsøkt where Treningsdagbok_BokId=" + bokId);
+			ResultSet myRs = myStmt.executeQuery("Select * from treningsøkt WHERE Treningsdagbok_BokId=" + bokId);
 			while (myRs.next()){
-			ret += "" + myRs.getString("Dato") + ": " + myRs.getString("Notat") + "\n";
+				ret += "" + myRs.getString("Dato") + ": " + myRs.getString("Notat") + "\n";
 			}
 		} catch (SQLException e) {
 			
@@ -42,7 +42,7 @@ public class getInfo {
 			myStmt = myConn.createStatement();
 			ResultSet myRs = myStmt.executeQuery("Select COUNT(ØktId) as num_workouts from treningsøkt where Dato >= DATE_ADD(CURDATE(), INTERVAL -30 DAY) AND Treningsdagbok_BokId=" + bokId);
 			while (myRs.next()){
-				num_workouts += myRs.getString("num_workouts");
+				num_workouts = myRs.getString("num_workouts");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -52,8 +52,9 @@ public class getInfo {
 	}
 
 	public void run() {
+		System.out.println("Test");
 		System.out.println(getLog());
-		System.out.println(getSummedInfo());
+		//System.out.println(getSummedInfo());
 	}
 
 }

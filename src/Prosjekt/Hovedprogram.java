@@ -4,7 +4,6 @@ import java.util.Scanner;
 public class Hovedprogram {
 
 	public static void main(String[] args) {
-		getInfo i;
 		int diaryID = 1;
 		boolean Con = true;
 		DatabaseConnection dbconn = new DatabaseConnection();
@@ -23,10 +22,9 @@ public class Hovedprogram {
 					g.run();
 			case 5: manageCategories c = new manageCategories(dbconn.getConnection());
 					c.run();
-			case 6: i = new getInfo(dbconn.getConnection(), diaryID);
+			case 6: getInfo i = new getInfo(dbconn.getConnection(), diaryID);
 					i.run();
 					dbconn.closeConnection();
-					
 			case 7: Con = false; 
 					//dbconn.closeConnection();
 			
