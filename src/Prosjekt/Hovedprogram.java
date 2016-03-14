@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class Hovedprogram {
 
 	public static void main(String[] args) {
+		int diaryID = 0;
 		boolean Con = true;
 		DatabaseConnection dbconn = new DatabaseConnection();
 		System.out.println("dbconn: " + dbconn);
@@ -22,7 +23,7 @@ public class Hovedprogram {
 					sc.close();
 					System.out.println(d.run());
 					break;
-			case 2: registerWorkout w = new registerWorkout(dbconn.getConnection());
+			case 2: registerWorkout w = new registerWorkout(dbconn.getConnection(), diaryID);
 					sc.close();
 					w.run();
 					break;
