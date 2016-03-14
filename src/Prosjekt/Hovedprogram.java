@@ -4,7 +4,8 @@ import java.util.Scanner;
 public class Hovedprogram {
 
 	public static void main(String[] args) {
-		int diaryID = 0;
+		getInfo i;
+		int diaryID = 1;
 		boolean Con = true;
 		DatabaseConnection dbconn = new DatabaseConnection();
 		System.out.println("Welcome to the Personal WorkOutDiary©. Please choose the wanted action: \n\n   1. Make diary\n   2. Register workout\n   3. Register excersice\n   4. Register goal\n   5. Manage categories\n   6. Get info\n   7. Exit");
@@ -22,8 +23,10 @@ public class Hovedprogram {
 					g.run();
 			case 5: manageCategories c = new manageCategories(dbconn.getConnection());
 					c.run();
-			case 6: getInfo i = new getInfo(dbconn.getConnection());
+			case 6: i = new getInfo(dbconn.getConnection(), diaryID);
 					i.run();
+					dbconn.closeConnection();
+					
 			case 7: Con = false; 
 					//dbconn.closeConnection();
 			
