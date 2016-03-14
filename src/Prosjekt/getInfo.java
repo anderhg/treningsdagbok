@@ -13,6 +13,7 @@ public class getInfo {
 	
 	public getInfo(Connection conn, int bokId) {
 		myConn = conn;
+		this.bokId = bokId;
 	}
 	
 	//Get-metoder
@@ -21,7 +22,7 @@ public class getInfo {
 		String ret = "";
 		try {
 			myStmt = myConn.createStatement();
-			ResultSet myRs = myStmt.executeQuery("Select * from treningsøkt WHERE Treningsdagbok_BokId=" + bokId);
+			ResultSet myRs = myStmt.executeQuery("Select * from treningsøkt WHERE Treningsdagbok_BokId = " + bokId);
 			while (myRs.next()){
 				ret += "" + myRs.getString("Dato") + ": " + myRs.getString("Notat") + "\n";
 			}
@@ -32,7 +33,7 @@ public class getInfo {
 		return ret; 	
 	}
 	
-	public String getSummedInfo(){
+	public void getSummedInfo(){
 		String num_workouts = "";
 		String num_hours = "";
 		String num_sets = "";
@@ -40,21 +41,34 @@ public class getInfo {
 		String total_lifted = "";
 		try {
 			myStmt = myConn.createStatement();
-			ResultSet myRs = myStmt.executeQuery("Select COUNT(ØktId) as num_workouts from treningsøkt where Dato >= DATE_ADD(CURDATE(), INTERVAL -30 DAY) AND Treningsdagbok_BokId=" + bokId);
+			ResultSet myRs = myStmt.executeQuery(
+					"SELECT COUNT(ØktId), SUM(Varighet), SUM(øktøvelse.Belastning), SUM(øktøvelse.Repetisjoner), SUM(øktøvelse.ØktId)"
+					+ "FROM treningsøkt"
+					+ "WHERE Dato >= DATE_ADD(CURDATE(), INTERVAL -30 DAY) AND"
+					+ "Treningsdagbok_BokId = " + bokId + " AND ("
+						+ "SELECT *"
+						+ "FROM øktøvelse"
+						+ "WHERE øktøvelse.ØktId = treningsøkt.ØktId");
 			while (myRs.next()){
-				num_workouts = myRs.getString("num_workouts");
+				num_workouts = myRs.getString("COUNT(ØktId)");
+				num_hours = myRs.getString("SUM(Varighet)");
+				num_sets = myRs.getString("SUM(øktøvelse.ØktId)");
+				num_reps = myRs.getString("SUM(øktøvelse.Repetisjoner)");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return num_workouts;	
+		System.out.println("Antall økter: " + num_workouts);
+		System.out.println("Antall minutter: " + num_hours);
+		System.out.println("Antall sett: " + num_sets);
+		System.out.println("Antall reps: " + num_reps);
 		
 	}
 
 	public void run() {
-		System.out.println("Test");
+		//System.out.println("Test");
 		System.out.println(getLog());
-		//System.out.println(getSummedInfo());
+		getSummedInfo();
 	}
 
 }
