@@ -39,29 +39,39 @@ public class getInfo {
 		String num_sets = "";
 		String num_reps = "";
 		String total_lifted = "";
+		
 		try {
 			myStmt = myConn.createStatement();
 			ResultSet myRs = myStmt.executeQuery(
-					"SELECT COUNT(ØktId), SUM(Varighet), SUM(øktøvelse.Belastning), SUM(øktøvelse.Repetisjoner), SUM(øktøvelse.ØktId)"
-					+ "FROM treningsøkt"
-					+ "WHERE Dato >= DATE_ADD(CURDATE(), INTERVAL -30 DAY) AND"
-					+ "Treningsdagbok_BokId = " + bokId + " AND ("
-						+ "SELECT *"
-						+ "FROM øktøvelse"
-						+ "WHERE øktøvelse.ØktId = treningsøkt.ØktId");
+					"SELECT COUNT(ØktId), SUM(Varighet)"
+					+ " FROM treningsøkt"
+					+ " WHERE Dato >= DATE_ADD(CURDATE(), INTERVAL -30 DAY) AND"
+					+ " Treningsdagbok_BokId = " + bokId + "");
 			while (myRs.next()){
 				num_workouts = myRs.getString("COUNT(ØktId)");
 				num_hours = myRs.getString("SUM(Varighet)");
-				num_sets = myRs.getString("SUM(øktøvelse.ØktId)");
-				num_reps = myRs.getString("SUM(øktøvelse.Repetisjoner)");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			myStmt = myConn.createStatement();
+			ResultSet myRs = myStmt.executeQuery("SELECT SUM(Belastning*Repetisjoner) AS totaltløftet, COUNT(ØktId) as totalset, SUM(Repetisjoner) AS totalrepetisjoner FROM treningsøkt JOIN øktøvelse USING(ØktId) WHERE Dato >= DATE_ADD(CURDATE(), INTERVAL -30 DAY) AND treningsøkt.Treningsdagbok_BokId = 1;");
+			while (myRs.next()){
+				total_lifted = myRs.getString("totaltløftet");
+				num_sets = myRs.getString("totalset");
+				num_reps = myRs.getString("totalrepetisjoner");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		System.out.println("Antall økter: " + num_workouts);
 		System.out.println("Antall minutter: " + num_hours);
-		System.out.println("Antall sett: " + num_sets);
-		System.out.println("Antall reps: " + num_reps);
+		System.out.println("Totalt antall repetisjoner: " + num_reps);
+		System.out.println("Totalt antall set: " + num_sets);
+		System.out.println("Totalt antall kg løftet: " + total_lifted);
 		
 	}
 
