@@ -14,14 +14,19 @@ public class Hovedprogram {
 			switch (action) {
 			case 1: MakeDiary d = new MakeDiary(dbconn.getConnection());
 					d.run();
+					dbconn.closeConnection();
 			case 2: registerWorkout w = new registerWorkout(dbconn.getConnection(), diaryID);
 					w.run();
+					dbconn.closeConnection();
 			case 3: registerExercise e  = new registerExercise(dbconn.getConnection());
 					e.run();
+					dbconn.closeConnection();
 			case 4: registerGoal g = new registerGoal(dbconn.getConnection());
 					g.run();
+					dbconn.closeConnection();
 			case 5: manageCategories c = new manageCategories(dbconn.getConnection());
 					c.run();
+					dbconn.closeConnection();
 			case 6: getInfo i = new getInfo(dbconn.getConnection(), diaryID);
 					i.run();
 					dbconn.closeConnection();
