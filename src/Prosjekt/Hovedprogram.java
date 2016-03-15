@@ -4,13 +4,17 @@ import java.util.Scanner;
 public class Hovedprogram {
 
 	public static void main(String[] args) {
+		Hovedprogram hp = new Hovedprogram();
+		hp.run();
+	}
+	
+	public void run(){
 		int diaryID = 0;
 		boolean Con = true;
 		DatabaseConnection dbconn = new DatabaseConnection();
-		System.out.println("dbconn: " + dbconn);
-		System.out.println("Welcome to the Personal WorkOutDiary©. Please choose the wanted action: \n\n   1. Make diary\n   2. Register workout\n   3. Register excersice\n   4. Register goal\n   5. Manage categories\n   6. Get info\n   7. Exit");
 		Scanner sc = new Scanner(System.in);
 		while(Con){
+			System.out.println("Welcome to the Personal WorkOutDiary©. Please choose the wanted action: \n\n   1. Make diary\n   2. Register workout\n   3. Register excersice\n   4. Register goal\n   5. Manage categories\n   6. Get info\n   7. Exit");
 			try{
 				Thread.sleep(1000);
 			}
@@ -26,11 +30,30 @@ public class Hovedprogram {
 					w.run();
 					break;
 			case 3: registerExercise e  = new registerExercise(dbconn.getConnection());
-					e.run();
+					System.out.println("What's the name of the exercise: \n");
+					String name = sc.nextLine();
+					while(e.checkName(name)){
+						System.out.println("That name is take, try a different one\n");
+						System.out.println("What's the name of the exercise: \n");
+						name = sc.nextLine();
+					}
+					System.out.println("Give a short description of the exercise: \n");
+					String desc = sc.nextLine();
+					System.out.println(e.run(name, desc));
 					break;
 			case 4: registerGoal g = new registerGoal(dbconn.getConnection());
-					System.out.println(g.run());
-					System.out.println("Finished");
+					System.out.println("Please enter the Exercise Id: ");
+					int eid = sc.nextInt();
+					System.out.println("Please enter the Diary Id: ");
+					int did = sc.nextInt();
+					System.out.println("Please enter load: ");
+					int load = sc.nextInt();
+					System.out.println("Please enter reps: ");
+					int reps = sc.nextInt();
+					System.out.println("Please provide a description: ");
+					String useless = sc.nextLine();
+					String des = sc.nextLine(); 
+					System.out.println(g.run(eid, did, des, load, reps));
 					break;
 			case 5: manageCategories c = new manageCategories(dbconn.getConnection());
 					c.run();
@@ -46,4 +69,9 @@ public class Hovedprogram {
 		sc.close();
 		dbconn.closeConnection();
 	}
+	
+	
 }
+
+
+

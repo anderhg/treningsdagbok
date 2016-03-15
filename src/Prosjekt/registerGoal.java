@@ -13,26 +13,24 @@ public class registerGoal {
 
 	public registerGoal(Connection connection) {
 		myConn = connection;
-		System.out.println("MyConn:  "+ connection + "  " + myConn);
 	}
 	
-	public void registerNewGoal(int ØvelsesId, int dagBokId){
+	public void registerNewGoal(int ØvelsesId, int dagBokId, String Beskrivelse, int Belastning, int Repetisjoner){
 		Date date = new Date();
 		String timeStamp = sdf.format(date);
 		try {
 			System.out.println(myConn);
 			myStmt = myConn.createStatement();
-			String sql = "insert into Mål" + "(ØvelsesId, BokId, TidspunktSatt, TidspunktOppnådd)" 
-					+ "values (" + ØvelsesId +","  +dagBokId +"," + "'" + timeStamp +"'" +"," +null + ")";			
-			System.out.println(sql);
+			String sql = "insert into Mål" + "(ØvelsesId, BokId, TidspunktSatt, TidspunktOppnådd, Beskrivelse, Belastning, Repetisjoner)" 
+					+ "values (" +  ØvelsesId +","  +dagBokId +"," + "'" + timeStamp +"'" +"," +null + "," + "'" + Beskrivelse +"'" +"," + "'" + Belastning +"'" +"," + "'" + Repetisjoner +"'" + ")";			
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public String run(){
-		registerNewGoal(1,1);
+	public String run(int ØvelsesId, int dagBokId, String Beskrivelse, int Belastning, int Repetisjoner){
+		registerNewGoal(ØvelsesId,dagBokId, Beskrivelse, Belastning, Repetisjoner);
 		try {
 			myConn.close();
 			System.out.println("Connection closed");
@@ -40,6 +38,6 @@ public class registerGoal {
 			System.out.println("Can't close");
 			e.printStackTrace();
 		}
-		return "Success!";
+		return "Success! You now registered a new goal";
 	}
 }
