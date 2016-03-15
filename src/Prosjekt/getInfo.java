@@ -18,7 +18,7 @@ public class getInfo {
 	
 	//Get-metoder
 	
-	public String getLog(){
+	public void getLog(){
 		String ret = "";
 		try {
 			myStmt = myConn.createStatement();
@@ -30,7 +30,23 @@ public class getInfo {
 			
 			e.printStackTrace();
 		}
-		return ret; 	
+		System.out.println(ret); 	
+	}
+	
+	public void getTopLifts() {
+		String output ="";
+		
+		try {
+			myStmt = myConn.createStatement();
+			ResultSet myRs = myStmt.executeQuery("SELECT (Belastning*Repetisjoner) AS totallift, øvelser.navn as navn FROM øvelser, øktøvelse JOIN treningsøkt USING(ØktId) WHERE treningsøkt.Treningsdagbok_BokId = 1 AND øvelser.ØvelsesId = øktøvelse.ØvelsesId ORDER BY (Belastning*Repetisjoner) DESC LIMIT 10;");
+			while (myRs.next()){
+				output += myRs.getString("totallift") + " kg " + myRs.getString("navn") + "\n";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Top 10 beste løft gjennom tidene:\n" + output);
+		
 	}
 	
 	public void getSummedInfo(){
@@ -46,7 +62,7 @@ public class getInfo {
 					"SELECT COUNT(ØktId), SUM(Varighet)"
 					+ " FROM treningsøkt"
 					+ " WHERE Dato >= DATE_ADD(CURDATE(), INTERVAL -30 DAY) AND"
-					+ " Treningsdagbok_BokId = " + bokId + "");
+					+ " Treningsdagbok_BokId = " + bokId + ";");
 			while (myRs.next()){
 				num_workouts = myRs.getString("COUNT(ØktId)");
 				num_hours = myRs.getString("SUM(Varighet)");
@@ -57,7 +73,7 @@ public class getInfo {
 		
 		try {
 			myStmt = myConn.createStatement();
-			ResultSet myRs = myStmt.executeQuery("SELECT SUM(Belastning*Repetisjoner) AS totaltløftet, COUNT(ØktId) as totalset, SUM(Repetisjoner) AS totalrepetisjoner FROM treningsøkt JOIN øktøvelse USING(ØktId) WHERE Dato >= DATE_ADD(CURDATE(), INTERVAL -30 DAY) AND treningsøkt.Treningsdagbok_BokId = 1;");
+			ResultSet myRs = myStmt.executeQuery("SELECT SUM(Belastning*Repetisjoner) AS totaltløftet, COUNT(ØktId) as totalset, SUM(Repetisjoner) AS totalrepetisjoner FROM treningsøkt JOIN øktøvelse USING(ØktId) WHERE Dato >= DATE_ADD(CURDATE(), INTERVAL -30 DAY) AND treningsøkt.Treningsdagbok_BokId =" + bokId + ";");
 			while (myRs.next()){
 				total_lifted = myRs.getString("totaltløftet");
 				num_sets = myRs.getString("totalset");
@@ -72,13 +88,14 @@ public class getInfo {
 		System.out.println("Totalt antall repetisjoner: " + num_reps);
 		System.out.println("Totalt antall set: " + num_sets);
 		System.out.println("Totalt antall kg løftet: " + total_lifted);
+		System.out.println("\n");
 		
 	}
 
 	public void run() {
-		//System.out.println("Test");
-		System.out.println(getLog());
+		getLog();
 		getSummedInfo();
+		getTopLifts();
 	}
 
 }
